@@ -2,12 +2,14 @@
 title: "First Version Control Project"
 author: "Amir Syahid"
 date: "2026-11-05"
-output: html_document
+output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
+This report is the first time I used git and github. this is my first trial to see how to track changes
 
 
 ```{r cars}
@@ -20,6 +22,15 @@ You can also embed plots, for example:
 
 ```{r pressure, echo=FALSE}
 plot(pressure)
+```
+
+```{r}
+plot(cars, col = "red", xlab = "speed (mph)", ylab = "distance (miles")
+```
+
+```{r}
+library(knitr)
+kable(summary(cars))
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
