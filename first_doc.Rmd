@@ -34,3 +34,24 @@ kable(summary(cars))
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+```{r}
+install.packages("rmarkdown", dep = TRUE)
+```
+
+```{r}
+library(readxl)
+flower <- read_excel("flower.xls")
+View(flower)
+str(flower)
+
+#For modern data analysis workflows in R, using read_excel() directly is generally preferred because it avoids manual conversion steps and provides cleaner printing and type stability. If factor variables are needed for modeling (like regression or ANOVA), convert them explicitly in R so you retain full control over factor levels and reference categories.
+
+```
+```{r}
+#different way of doing it
+flowers <- read.table(file = "flowers.txt", header = TRUE, sep ="\t", stringsAsFactors = T)
+str(flowers)
+```
+
