@@ -12,34 +12,6 @@ knitr::opts_chunk$set(echo = TRUE)
 This report is the first time I used git and github. this is my first trial to see how to track changes
 
 
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-```{r}
-plot(cars, col = "red", xlab = "speed (mph)", ylab = "distance (miles")
-```
-
-```{r}
-library(knitr)
-kable(summary(cars))
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
-
-
-```{r}
-install.packages("rmarkdown", dep = TRUE)
-```
-
 ```{r}
 library(readxl)
 flower <- read_excel("flower.xls")
@@ -87,5 +59,160 @@ flower[, 1:3]
 ```
 ```{r}
 flower[1:5, c("treat", "nitrogen", "leafarea")]
+```
+```{r}
+big_flowers <- flower[flower$height > 12, ]
+big_flowers
+```
+```{r}
+flower$height > 12
+
+flower[flower$height>12, ]
+```
+
+```{r}
+nit_high <- flower[flower$nitrogen == "high", ]        
+nit_high
+```
+
+```{r}
+nit_not_medium <- flower[flower$nitrogen != "medium", 1:4]        
+nit_not_medium
+```
+
+```{r}
+low_notip_heigh6 <- flower[flower$height >= 6 & flower$nitrogen == "medium" &
+                             flower$treat == "notip", ]        
+low_notip_heigh6
+
+```
+
+```{r}
+height2.2_12.3 <- flower[flower$height > 12.3 | flower$height < 2.2, ]        
+height2.2_12.3
+```
+
+
+```{r}
+tip_med_2 <- subset(flower, treat == "tip" & nitrogen == "medium" & block == 2)
+tip_med_2
+
+```
+
+```{r}
+tipplants <- subset(flower, treat == "tip" & nitrogen == "medium" & block == 2, 
+                            select = c("treat", "nitrogen", "leafarea"))
+tipplants
+
+```
+
+```{r}
+height_ord <- flower[order(flower$height), ]        
+height_ord
+```
+
+
+```{r}
+height_ord <- flowers[order(flowers$height), ]        
+height_ord
+```
+
+```{r}
+leafarea_ord <- flower[order(flower$leafarea, decreasing = TRUE), ]        
+leafarea_ord
+```
+
+```{r}
+block_height_ord <- flower[order(flower$block, flower$height), ]        
+block_height_ord
+```
+
+```{r}
+flower$orig_row <- 1:nrow(flower)
+flower
+```
+
+```{r}
+block_revheight_ord <- flower[order(flower$block, -flower$height), ]        
+block_revheight_ord
+```
+
+
+```{r}
+block_revheight_ord <- flower[order(-xtfrm(flower$nitrogen), flower$height), ]        
+block_revheight_ord
+```
+
+
+```{r}
+flower$nitrogen <- factor(flower$nitrogen, 
+                           levels = c("low", "medium", "high"))    
+nit_ord <- flower[order(flower$nitrogen),]
+nit_ord
+```
+
+
+```{r}
+df1 <- data.frame(id = 1:4, height = c(120, 150, 132, 122),
+                        weight = c(44, 56, 49, 45))
+df1
+```
+```{r}
+df2 <- data.frame(id = 5:6, height = c(119, 110),
+                                        weight = c(39, 35))
+df2
+```
+
+```{r}
+df3 <- data.frame(id = 1:4, height = c(120, 150, 132, 122),
+                        weight = c(44, 56, 49, 45))
+df3
+```
+
+```{r}
+df4 <- data.frame(location = c("UK", "CZ", "CZ", "UK"))
+df4
+```
+
+```{r}
+df_rcomb <- rbind(df1, df2)
+df_rcomb
+```
+
+```{r}
+df_ccomb <- cbind(df3, df4)
+df_ccomb
+```
+
+```{r}
+# log10 transformation
+df_rcomb$height_log10 <- log10(df_rcomb$height)
+df_rcomb
+```
+
+```{r}
+# convert to a factor 
+df_rcomb$Fid <- factor(df_rcomb$id)
+df_rcomb
+```
+
+```{r}
+str(df_rcomb)
+```
+
+```{r}
+taxa <- data.frame(GENUS = c("Patella", "Littorina", "Halichondria", "Semibalanus"),
+         species = c("vulgata", "littoria", "panacea", "balanoides"),
+         family = c("patellidae", "Littorinidae", "Halichondriidae", "Archaeobalanidae"))
+taxa
+```
+
+```{r}
+zone <- data.frame(genus = c("Laminaria", "Halichondria", "Xanthoria", "Littorina", 
+                             "Semibalanus", "Fucus"),
+                   species = c("digitata", "panacea", "parietina", "littoria", 
+                               "balanoides", "serratus"),
+                   zone = c( "v_low", "low", "v_high", "low_mid", "high", "low_mid"))
+zone
 ```
 
