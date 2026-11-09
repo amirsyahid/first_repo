@@ -216,3 +216,26 @@ zone <- data.frame(genus = c("Laminaria", "Halichondria", "Xanthoria", "Littorin
 zone
 ```
 
+```{r}
+library(ellmer)
+library(gander)
+```
+
+```{r}
+View(cars)
+
+data <- cars
+
+
+library(tidyverse)
+library(ggpubr)
+
+install.packages("ggpubr")
+
+
+ggscatter(data, x = "speed", y = "dist", add = "reg.line", conf.int = TRUE, 
+          cor.coef = TRUE, cor.method = "pearson")
+
+cor.test(data$speed, data$dist, method = "pearson")
+```
+
