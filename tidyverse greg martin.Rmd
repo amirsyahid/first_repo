@@ -1,0 +1,71 @@
+
+R programming for beginners. Manipulate data using the tidyverse: select, filter and mutate.
+https://youtu.be/nRtp7wSEtJA?si=gYTjwzAubesA5gja
+
+```{r}
+install.packages("tidyverse")
+library(tidyverse)
+
+```
+```{r}
+#to see dataset available in R
+data()
+#lets use starwars
+View(starwars)
+```
+
+
+Now we are going to try to get the BMI of humans in this dataset. to see the name of the variables
+
+```{r}
+names(starwars)
+
+```
+
+```{r}
+starwars  %>% 
+  select(gender, mass, height, species)
+```
+
+we want human only
+```{r}
+starwars  %>% 
+  select(gender, mass, height, species) %>% 
+  filter(species == "Human") %>% 
+  na.omit()#to remove the missing value
+```
+lets change the height to metre
+```{r}
+starwars  %>% 
+  select(gender, mass, height, species) %>% 
+  filter(species == "Human") %>% 
+  na.omit() %>% 
+  mutate(height = height/100)
+```
+
+now lets create a new variable= BMI
+
+```{r}
+starwars  %>% 
+  select(gender, mass, height, species) %>% 
+  filter(species == "Human") %>% 
+  na.omit() %>% 
+  mutate(height = height/100) %>% 
+  mutate(BMI = mass/height^2)
+  
+```
+
+is there a difference between BMI of male and female? lets find out
+
+
+```{r}
+starwars  %>% 
+  select(gender, mass, height, species) %>% 
+  filter(species == "Human") %>% 
+  na.omit() %>% 
+  mutate(height = height/100) %>% 
+  mutate(BMI = mass/height^2) %>% 
+  group_by(gender) %>% 
+  summarise(Average_BMI = mean(BMI))
+```
+
