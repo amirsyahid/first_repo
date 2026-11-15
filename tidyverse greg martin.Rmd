@@ -191,3 +191,112 @@ msleep %>%
   view
 ```
 
+# How to explore data using R
+https://youtu.be/3iz-2iM4RFE?si=JmMuXqHviYcdFcmd
+
+The steps mentioned:
+1. Explore
+2. Clean
+3. Manipulate
+4. Describe
+5. Visualise
+6. Analyse
+
+```{r}
+library(tidyverse)
+data()
+?starwars
+
+```
+
+Lets start
+
+```{r}
+dim(starwars)#dimension
+str(starwars)#structure
+glimpse(starwars)#same kind like str, but better
+View(starwars)#if you want  to see the dataset, but you can actually click on the environment icon
+head(starwars)#first 6 observation
+tail(starwars)#last 6 observation
+
+starwars$name #if want to look at only one variable
+attach(starwars)#if you dont want to repeat the dollar sign multiple times
+
+
+names(starwars)#to see the variables
+length(starwars)#number of variables
+class(hair_color)#already covered actually in glimpse
+length(hair_color)#number of rows
+unique(hair_color)#possible color in the variable
+
+```
+Beware that NA, none, unknwon might mean differently
+
+
+Now lets do something more complex
+
+```{r}
+table(hair_color) #you will get a table of the variable
+```
+```{r}
+sort(table(hair_color), decreasing = T) #you can sort the table
+```
+```{r}
+View(sort(table(hair_color), decreasing = T)) # you can view it in a new window, more nicely
+```
+
+and how to use pipe operator
+
+```{r}
+starwars %>% 
+  select(hair_color) %>% 
+  count(hair_color) %>%
+  arrange(desc(n)) %>% 
+  View()
+```
+
+and if we change the word 'View", and type barplot, you will get a barplot
+
+```{r}
+barplot(sort(table(hair_color), decreasing = T))
+```
+
+Lets talk about missing data
+YOu need to do this for all variables
+
+```{r}
+starwars[ , ] #this is to get row,column
+
+starwars[is.na(hair_color), ] #you want to see missing data of hair_color
+
+View(starwars[is.na(hair_color), ]) #if you want to see the missing data more in a more beautiful way
+
+is.na(hair_color) #this will only give logical argument, not really useful
+
+
+```
+
+
+lets see numerical variable
+
+```{r}
+class(height)
+```
+
+```{r}
+length(height)
+```
+```{r}
+summary(height)
+```
+
+```{r}
+boxplot(height)
+```
+
+```{r}
+hist(height)
+
+detach(starwars) #just to detach
+```
+
