@@ -300,3 +300,124 @@ hist(height)
 detach(starwars) #just to detach
 ```
 
+#Data Cleaning
+https://youtu.be/sV5lwAJ7vnQ?si=6Viaj-Ea1Qm2Gk5F
+
+What is clean data?
+1. correct variable types
+2. select and filter (what you want and dont)
+3. find and deal with missing data
+4. find and deal with duplicates
+5. recoding values
+
+
+Just like before
+
+```{r}
+library(tidyverse)
+View(starwars)
+glimpse(starwars) #you can see that there is no factor here aka categorical variables
+class(starwars$gender) #this variable is a categorical but percieved as character in R
+unique(starwars$gender)
+
+```
+##Correcting/changing variable types
+how to change character variable to factor variable?
+
+```{r}
+starwars$gender <- as.factor(starwars$gender)
+class(starwars$gender)#to see the change
+
+```
+sometimes, a factor variable has level on it, thats make it different from character variable
+
+to see levels
+```{r}
+levels(starwars$gender)
+```
+let say we want to change the level, how to do it?
+
+```{r}
+starwars$gender <- factor((starwars$gender),
+                          levels = c("masculine",
+                                     "feminine"))
+levels(starwars$gender) # already changed!
+```
+## Variable Selection
+Moving on to the next, to select variables
+
+```{r}
+names(starwars)
+```
+
+```{r}
+starwars %>% 
+  select(name,height, ends_with("color")) %>% #select any variable with the names color at the end
+  names() #to see the variables right now
+```
+if you want to see the dataset, just remove the function names
+```{r}
+starwars %>% 
+  select(name,height, ends_with("color"))
+```
+
+if we take hair color, and we want to see the possible observation
+
+```{r}
+starwars %>% 
+  select(name,height, ends_with("color")) %>% 
+  filter(hair_color %in% c("blond", "brown") & #observe the boolean opeartor in action
+           height<180)
+```
+
+##Missing data
+```{r}
+mean(starwars$height)
+mean(starwars$height, na.rm = T) #if we want to take average properly, need to remove the NA
+
+```
+not recommended to do this where you just omit all NA
+```{r}
+starwars %>% 
+  select(name, gender, hair_color, height) %>% 
+  na.omit()
+```
+
+
+to filter for only complete observation of the dataset
+
+```{r}
+starwars %>% 
+  select(name, gender, hair_color, height) %>% 
+  filter(complete.cases(.))
+```
+
+want to do the reverse? maybe you want to see what data is missing? here's how.
+and now you can get some sense of the missingness 
+```{r}
+starwars %>% 
+  select(name, gender, hair_color, height) %>% 
+  filter(!complete.cases(.))
+```
+
+for android like C3PO, of course it dont have hair, so its not really missing, but no hair. might need to replace this
+
+and now for height we might decide on removing those with no documented height
+
+```{r}
+starwars %>% 
+  select(name, gender, hair_color, height) %>% 
+  filter(!complete.cases(.)) %>% 
+  drop_na(height)
+```
+
+let say we remove the line of !complete.cases
+
+```{r}
+starwars %>% 
+  select(name, gender, hair_color, height) %>% 
+  drop_na(height) %>% 
+  View()
+```
+
+see 20;15
