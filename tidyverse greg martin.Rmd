@@ -1,19 +1,19 @@
+# R programming for beginners. Manipulate data using the tidyverse: select, filter and mutate.
 
-R programming for beginners. Manipulate data using the tidyverse: select, filter and mutate.
-https://youtu.be/nRtp7wSEtJA?si=gYTjwzAubesA5gja
+<https://youtu.be/nRtp7wSEtJA?si=gYTjwzAubesA5gja>
 
 ```{r}
-install.packages("tidyverse")
-library(tidyverse)
+install.packages("tidyverse") #do it once
+library(tidyverse) #or use require()
 
 ```
+
 ```{r}
 #to see dataset available in R
 data()
 #lets use starwars
 View(starwars)
 ```
-
 
 Now we are going to try to get the BMI of humans in this dataset. to see the name of the variables
 
@@ -28,13 +28,16 @@ starwars  %>%
 ```
 
 we want human only
+
 ```{r}
 starwars  %>% 
   select(gender, mass, height, species) %>% 
   filter(species == "Human") %>% 
   na.omit()#to remove the missing value
 ```
+
 lets change the height to metre
+
 ```{r}
 starwars  %>% 
   select(gender, mass, height, species) %>% 
@@ -57,7 +60,6 @@ starwars  %>%
 
 is there a difference between BMI of male and female? lets find out
 
-
 ```{r}
 starwars  %>% 
   select(gender, mass, height, species) %>% 
@@ -67,5 +69,125 @@ starwars  %>%
   mutate(BMI = mass/height^2) %>% 
   group_by(gender) %>% 
   summarise(Average_BMI = mean(BMI))
+```
+
+# 10 data filtering tips using R programming. Use the tidyverse to filter and subset your data.
+
+https://youtu.be/pU10ghMvAuM?si=07lIKgMAJH6IbRXX
+
+```{r}
+library(tidyverse)
+View(msleep)
+names(msleep)
+```
+Lets talk about ways to use filter function in R
+
+```{r}
+my_data <- msleep %>% 
+  select(name, sleep_total) %>% 
+  filter(sleep_total > 18)
+my_data
+```
+the next way is to use the '!' , which means 'not'
+
+```{r}
+my_data <- msleep %>% 
+  select(name, sleep_total) %>% 
+  filter(!sleep_total > 18)
+my_data
+```
+
+what if we want to filter more than 1 criteria? we use the ',' to indicate the boolean operator of AND
+
+```{r}
+my_data <- msleep %>% 
+  select(name, order, bodywt, sleep_total) %>% 
+  filter(order == "Primates", bodywt > 20)
+my_data
+```
+the next thing we can do it using the boolean operator OR rather than AND
+
+```{r}
+my_data <- msleep %>% 
+  select(name, order, bodywt, sleep_total) %>% 
+  filter(order == "Primates"| bodywt > 20)
+my_data
+```
+we can also use the OR operator multiple times
+
+```{r}
+msleep$name
+
+my_data <- msleep %>% 
+  select(name, sleep_total) %>% 
+  filter(name =="Cow"|
+           name == "Dog" |
+           name == "Goat")
+my_data
+```
+
+slighyly elegant way of doing it
+```{r}
+
+my_data <- msleep %>% 
+  select(name, sleep_total) %>% 
+  filter(name %in% c("Cow", "Dog", "Horse"))
+my_data
+```
+also in filter, we can use between
+
+```{r}
+
+my_data <- msleep %>% 
+  select(name, sleep_total) %>% 
+  filter(between(sleep_total, 16, 18))
+my_data
+```
+
+now we are filter out value with near to our specified number
+
+```{r}
+
+my_data <- msleep %>% 
+  select(name, sleep_total) %>% 
+  filter(near(sleep_total, 17, tol = 0.5))
+my_data
+```
+and now lets filter those with missing values
+
+```{r}
+
+my_data <- msleep %>% 
+  select(name, conservation, sleep_total) %>% 
+  filter(is.na(conservation))
+my_data
+```
+
+and the opposite of the above, we wanted to filter those not missing. guess what, just use '!'
+
+```{r}
+my_data <- msleep %>% 
+  select(name, conservation, sleep_total) %>% 
+  filter(!is.na(conservation))
+my_data
+```
+
+#Group by and summarise
+
+```{r}
+require(tidyverse)
+```
+```{r}
+view(msleep) #use this dataset, mammal sleep
+names(msleep)
+```
+
+```{r}
+msleep %>% 
+  drop_na(sleep_rem, vore) %>% 
+  group_by(vore) %>% 
+  summarise('Average total sleep' = mean(sleep_total),
+            'Maximum rem sleep' = max(sleep_rem)) %>% 
+  view
 ```
 
