@@ -420,4 +420,29 @@ starwars %>%
   View()
 ```
 
-see 20;15
+if we want to replace NA with something else
+
+```{r}
+starwars %>% 
+  select(name, gender, hair_color, height) %>% 
+  filter(!complete.cases(.)) |> 
+  mutate(hair_color= replace_na(hair_color, "none"))
+```
+
+if we dont overwrite the original variable
+```{r}
+starwars %>% 
+  select(name, gender, hair_color, height) %>% 
+  filter(!complete.cases(.)) |> 
+  mutate(hair_color2= replace_na(hair_color, "none"))
+```
+```
+
+##Duplicate
+
+Lets do a dataset to be used for our example
+
+```{r}
+Names 
+```
+
