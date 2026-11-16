@@ -4,7 +4,7 @@
 
 ```{r}
 install.packages("tidyverse") #do it once
-library(tidyverse) #or use require()
+library(tidyverse) #or use require() 
 
 ```
 
@@ -78,7 +78,7 @@ https://youtu.be/pU10ghMvAuM?si=07lIKgMAJH6IbRXX
 ```{r}
 library(tidyverse)
 View(msleep)
-names(msleep)
+names(msleep) 
 ```
 Lets talk about ways to use filter function in R
 
@@ -179,7 +179,7 @@ require(tidyverse)
 ```
 ```{r}
 view(msleep) #use this dataset, mammal sleep
-names(msleep)
+names(msleep) 
 ```
 
 ```{r}
@@ -205,7 +205,7 @@ The steps mentioned:
 ```{r}
 library(tidyverse)
 data()
-?starwars
+?starwars 
 
 ```
 
@@ -315,7 +315,7 @@ Just like before
 
 ```{r}
 library(tidyverse)
-View(starwars)
+View(starwars) 
 glimpse(starwars) #you can see that there is no factor here aka categorical variables
 class(starwars$gender) #this variable is a categorical but percieved as character in R
 unique(starwars$gender)
@@ -333,12 +333,12 @@ sometimes, a factor variable has level on it, thats make it different from chara
 
 to see levels
 ```{r}
-levels(starwars$gender)
+levels(starwars$gender) 
 ```
 let say we want to change the level, how to do it?
 
 ```{r}
-starwars$gender <- factor((starwars$gender),
+starwars$gender <- factor((starwars$gender), 
                           levels = c("masculine",
                                      "feminine"))
 levels(starwars$gender) # already changed!
@@ -347,7 +347,7 @@ levels(starwars$gender) # already changed!
 Moving on to the next, to select variables
 
 ```{r}
-names(starwars)
+names(starwars) 
 ```
 
 ```{r}
@@ -358,7 +358,7 @@ starwars %>%
 if you want to see the dataset, just remove the function names
 ```{r}
 starwars %>% 
-  select(name,height, ends_with("color"))
+  select(name,height, ends_with("color")) 
 ```
 
 if we take hair color, and we want to see the possible observation
@@ -367,20 +367,20 @@ if we take hair color, and we want to see the possible observation
 starwars %>% 
   select(name,height, ends_with("color")) %>% 
   filter(hair_color %in% c("blond", "brown") & #observe the boolean opeartor in action
-           height<180)
+           height<180) 
 ```
 
 ##Missing data
 ```{r}
 mean(starwars$height)
-mean(starwars$height, na.rm = T) #if we want to take average properly, need to remove the NA
+mean(starwars$height, na.rm = T) #if we want to take average properly, need to remove the NA 
 
 ```
 not recommended to do this where you just omit all NA
 ```{r}
 starwars %>% 
   select(name, gender, hair_color, height) %>% 
-  na.omit()
+  na.omit() 
 ```
 
 
@@ -397,7 +397,7 @@ and now you can get some sense of the missingness
 ```{r}
 starwars %>% 
   select(name, gender, hair_color, height) %>% 
-  filter(!complete.cases(.))
+  filter(!complete.cases(.)) 
 ```
 
 for android like C3PO, of course it dont have hair, so its not really missing, but no hair. might need to replace this
@@ -408,7 +408,7 @@ and now for height we might decide on removing those with no documented height
 starwars %>% 
   select(name, gender, hair_color, height) %>% 
   filter(!complete.cases(.)) %>% 
-  drop_na(height)
+  drop_na(height) 
 ```
 
 let say we remove the line of !complete.cases
@@ -436,13 +436,44 @@ starwars %>%
   filter(!complete.cases(.)) |> 
   mutate(hair_color2= replace_na(hair_color, "none"))
 ```
-```
 
 ##Duplicate
 
 Lets do a dataset to be used for our example
 
 ```{r}
-Names 
+Names <-  c("Amir", "Aini", "Affan", "Amir")
+Age <- c(35,34,6,35)
+friends <- data.frame(Names, Age)
+
+friends[!duplicated(friends), ] #base R way. you can also use select in tidyverse. here we identify the not duplicated
+
+friends[duplicated(friends), ] #here we want to identify the duplicated
+
+friends |> distinct() #tidyverse way
 ```
+## Recoding variable
+
+```{r}
+starwars |> select(name,gender)#let say we want to change the code for gender
+
+starwars |> 
+  select(name, gender) |>
+  mutate(gender = recode(gender,
+                         "masculine" = 1,
+                         "feminine" = 2))
+```
+
+or if you want to assign new variable
+
+```{r}
+starwars |> 
+  select(name, gender) |>
+  mutate(gender_coded = recode(gender,
+                         "masculine" = 1,
+                         "feminine" = 2))
+```
+
+# Recoding data (extension from the cleaning segment)
+
 
