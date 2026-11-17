@@ -478,7 +478,19 @@ starwars |>
 Lets just see whats new here
 
 ```{r}
-
+library(tidyverse)
+View(starwars)
+names(starwars)
+distinct(starwars$eye_color)
 ```
 
+```{r}
+sw <- starwars |> 
+  select(name, height, mass, gender) |> 
+  rename(weight = mass) |> #change mass to weight
+  na.omit() |> 
+  mutate(height = height/100) |> #change from cm to m of the variable 
+  filter(gender =="male" |
+         gender == "female") |> # we want to change "male female" to "m  f"
+```
 
