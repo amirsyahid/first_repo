@@ -497,4 +497,154 @@ sw <- starwars |>
            gender == "feminine") 
 
 ```
+or like this
+```{r}
+sw <- starwars |> 
+  select(name, height, mass, gender) |> 
+  rename(weight = mass) |> #change mass to weight
+  na.omit() |> 
+  mutate(height = height/100) |> 
+  filter(gender %in% c("masculine" ,"feminine")) 
+```
+now lets recode masculine and feminine to m and f
+
+just so you know, to change variable name (column name), you use rename, but for recoding variable, you use recode on top of mutate.
+
+
+```{r}
+sw <- starwars |> 
+  select(name, height, mass, gender) |> 
+  rename(weight = mass) |> #change mass to weight
+  na.omit() |> 
+  mutate(height = height/100) |> 
+  filter(gender %in% c("masculine" ,"feminine")) |> 
+  mutate(gender = recode(gender,
+                         masculine = "m",
+                         feminine = "f"))
+```
+
+let say we want to classify the size, by criteria of height and weight
+
+```{r}
+sw <- starwars |> 
+  select(name, height, mass, gender) |> 
+  rename(weight = mass) |> #change mass to weight
+  na.omit() |> 
+  mutate(height = height/100) |> 
+  filter(gender %in% c("masculine" ,"feminine")) |> 
+  mutate(gender = recode(gender,
+                         masculine = "m",
+                         feminine = "f")) |> 
+  mutate(size = height >1 & weight  > 75) #this will give you logical vector with TRUE and FALSE output 
+
+```
+
+to resolve the logical vector, we are going to use another argument
+```{r}
+sw <- starwars |> 
+  select(name, height, mass, gender) |> 
+  rename(weight = mass) |> #change mass to weight
+  na.omit() |> 
+  mutate(height = height/100) |> 
+  filter(gender %in% c("masculine" ,"feminine")) |> 
+  mutate(gender = recode(gender,
+                         masculine = "m",
+                         feminine = "f")) |> 
+  mutate(size = height >1 & weight  > 75,
+         size = if_else(size ==T, "big","small")) |> 
+  view()
+```
+
+#7. Rename variables and reorder columns. Data cleaning and manipulation.
+https://youtu.be/q_ax_aG6ZdQ?si=1H5eI8GL4hV-E50e
+
+```{r}
+library(tidyverse)
+
+starwars
+
+sw <- starwars |> 
+  select(name, height, mass, gender, everything()) #to arrange, you put everything else argument on the last part
+```
+
+to rename
+
+```{r}
+sw <- starwars |> 
+  select(name, height, mass, gender) |> 
+  rename(weight = mass) |> 
+  view()
+```
+
+#8. Categorical data with R. Using the forcats package to manipulate factor variables
+https://youtu.be/AClIvVfqspY?si=2qB964AiL6290vsX
+```{r}
+library(tidyverse)
+view(gss_cat) #dataset about american cencus
+
+
+```
+
+categorical in R is call factor, and factor has levels and levels has an order
+not all has order but, if it has order, we need to tell this to R
+
+to see and count the frequency of observation, you use count()
+```{r}
+gss_cat |> 
+  count(marital)
+```
+
+
+lets say that we want this to be in different order
+within tidyverse, we have function called fct_relevel
+
+```{r}
+gss_cat |> 
+  mutate(marital = fct_relevel(marital,
+                                "Never married",
+                               "Married",
+                                "Separated",
+                               "Divorced",
+                               "Widowed",
+                               "No answer")) |> 
+  count(marital)
+```
+if we want to arrange by count, rahter than manually
+
+```{r}
+gss_cat |> 
+  mutate(marital = fct_infreq(marital)) |> 
+  count(marital)
+
+```
+
+want to change to reverse
+
+```{r}
+gss_cat |> 
+  mutate(marital = fct_infreq(marital)) |>
+  mutate(marital = fct_rev(marital)) |> 
+  count(marital) # need to use the argument in order
+```
+
+a really useful featuer, factor reorder the level, according to value in another variable
+
+
+
+
+```{r}
+gss_cat |> 
+  group_by(relig) |> 
+  summarise(meantv = mean(tvhours, na.rm = T)) |> 
+  mutate(relig= fct_reorder(relig, meantv)) |> 
+  ggplot(aes(meantv, relig))+
+  geom_point(size =4,
+             colour = "steelblue")+
+  theme_minimal()+
+  labs(title = "Average TV watchtime by religion",
+       x = "Average TV watch time",
+       y = "")
+```
+
+
 
