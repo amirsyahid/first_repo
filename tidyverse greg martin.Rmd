@@ -1,4 +1,4 @@
-# R programming for beginners. Manipulate data using the tidyverse: select, filter and mutate.
+# 1. R programming for beginners. Manipulate data using the tidyverse: select, filter and mutate.
 
 <https://youtu.be/nRtp7wSEtJA?si=gYTjwzAubesA5gja>
 
@@ -71,7 +71,7 @@ starwars  %>%
   summarise(Average_BMI = mean(BMI))
 ```
 
-# 10 data filtering tips using R programming. Use the tidyverse to filter and subset your data.
+# 2. 10 data filtering tips using R programming. Use the tidyverse to filter and subset your data.
 
 https://youtu.be/pU10ghMvAuM?si=07lIKgMAJH6IbRXX
 
@@ -172,7 +172,7 @@ my_data <- msleep %>%
 my_data
 ```
 
-#Group by and summarise
+#3. Group by and summarise
 
 ```{r}
 require(tidyverse)
@@ -191,7 +191,7 @@ msleep %>%
   view
 ```
 
-# How to explore data using R
+#4. How to explore data using R
 https://youtu.be/3iz-2iM4RFE?si=JmMuXqHviYcdFcmd
 
 The steps mentioned:
@@ -300,7 +300,7 @@ hist(height)
 detach(starwars) #just to detach
 ```
 
-#Data Cleaning
+#5. Data Cleaning
 https://youtu.be/sV5lwAJ7vnQ?si=6Viaj-Ea1Qm2Gk5F
 
 What is clean data?
@@ -321,7 +321,7 @@ class(starwars$gender) #this variable is a categorical but percieved as characte
 unique(starwars$gender)
 
 ```
-##Correcting/changing variable types
+##a. Correcting/changing variable types
 how to change character variable to factor variable?
 
 ```{r}
@@ -343,7 +343,7 @@ starwars$gender <- factor((starwars$gender),
                                      "feminine"))
 levels(starwars$gender) # already changed!
 ```
-## Variable Selection
+##b.  Variable Selection
 Moving on to the next, to select variables
 
 ```{r}
@@ -370,7 +370,7 @@ starwars %>%
            height<180) 
 ```
 
-##Missing data
+##c. Missing data
 ```{r}
 mean(starwars$height)
 mean(starwars$height, na.rm = T) #if we want to take average properly, need to remove the NA 
@@ -437,7 +437,7 @@ starwars %>%
   mutate(hair_color2= replace_na(hair_color, "none"))
 ```
 
-##Duplicate
+##d. Duplicate
 
 Lets do a dataset to be used for our example
 
@@ -452,7 +452,7 @@ friends[duplicated(friends), ] #here we want to identify the duplicated
 
 friends |> distinct() #tidyverse way
 ```
-## Recoding variable
+##e. Recoding variable
 
 ```{r}
 starwars |> select(name,gender)#let say we want to change the code for gender
@@ -474,23 +474,27 @@ starwars |>
                          "feminine" = 2))
 ```
 
-# Recoding data (extension from the cleaning segment)
+#6. Recoding data (extension from the cleaning segment)
 Lets just see whats new here
 
 ```{r}
 library(tidyverse)
 View(starwars)
 names(starwars)
-distinct(starwars$eye_color)
 ```
 
 ```{r}
+unique(starwars$gender) #to see or filter within a column
+
+
+
 sw <- starwars |> 
   select(name, height, mass, gender) |> 
   rename(weight = mass) |> #change mass to weight
   na.omit() |> 
-  mutate(height = height/100) |> #change from cm to m of the variable 
-  filter(gender =="male" |
-         gender == "female") |> # we want to change "male female" to "m  f"
+  mutate(height = height/100) |> 
+  filter(gender == "masculine" |
+           gender == "feminine") 
+
 ```
 
